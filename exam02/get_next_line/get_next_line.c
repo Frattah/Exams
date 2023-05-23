@@ -1,0 +1,28 @@
+#include "get_next_line.h"
+#include <stdio.h>
+
+char	*get_next_line(int fd)
+{
+	int		i;
+	int		rd;
+	char	character;
+	char	*buffer;
+
+	if (BUFFER_SIZE <= 0)
+		return (NULL);
+	i = 0;
+	rd = 0;
+	buffer = malloc(100000);
+	rd = read(fd, &character, BUFFER_SIZE - BUFFER_SIZE + 1);
+	while (rd > 0)
+	{
+		buffer[i++] = character;
+		if (character == '\n')
+			break ;
+		rd = read(fd, &character, BUFFER_SIZE - BUFFER_SIZE + 1);
+	}
+	buffer[i] = '\0';
+	if (rd == -1 || i == 0 || (!buffer[i - 1] && !rd))
+		return (free(buffer), NULL);
+	return (buffer);
+}
